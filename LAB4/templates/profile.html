@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Profile | {{ profile.name }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <p class="eyebrow">ABOUT ME</p>
+    <h1>My Profile</h1>
+    <p>A little information about me, my studies, and my interests.</p>
+</section>
+
+<section class="profile-layout">
+    <div class="about-box">
+        <img src="{{ url_for('static', filename='images/me.jpg') }}"
+     alt="My profile photo"
+     class="profile-photo">
+        <h2>{{ profile.name }}</h2>
+        <p class="muted">{{ profile.course }} · {{ profile.section }}</p>
+        <p><strong>School:</strong> {{ profile.school }}</p>
+        <p><strong>Location:</strong> {{ profile.location }}</p>
+        <p>{{ profile.about }}</p>
+
+        <div class="motto">
+            <strong>My Motto</strong>
+            <p>“{{ profile.motto }}”</p>
+        </div>
+    </div>
+
+    <div class="about-box">
+        <h2>My Skills</h2>
+
+        <div class="skill-list">
+            {% for skill in profile.skills %}
+            <div class="skill">
+                <span>{{ skill }}</span>
+                <span>✓</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

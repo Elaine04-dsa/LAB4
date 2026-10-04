@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}String Converter | {{ profile.name }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <p class="eyebrow">PROGRAMMING WORK</p>
+    <h1>Convert to Uppercase</h1>
+    <p>Enter text and convert it to uppercase.</p>
+</section>
+
+<section class="calculator">
+    <form action="{{ url_for('works') }}" method="POST" class="calc-form">
+        <label for="inputString">Enter a string</label>
+        <input type="text" id="inputString" name="inputString" required placeholder="Type something...">
+        <button class="btn primary" type="submit">Convert</button>
+    </form>
+
+    <div class="result-box">
+        <span>RESULT</span>
+        {% if result %}
+        <strong class="text-result">{{ result }}</strong>
+        {% else %}
+        <strong>—</strong>
+        <small>Your converted text will appear here.</small>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

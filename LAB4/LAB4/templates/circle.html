@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Circle Area | {{ profile.name }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <p class="eyebrow">PROGRAMMING WORK</p>
+    <h1>Area of a Circle</h1>
+    <p>Formula: A = πr²</p>
+</section>
+
+<section class="calculator">
+    <form action="{{ url_for('acircle') }}" method="POST" class="calc-form">
+        <label for="radius">Enter the radius</label>
+        <input type="number" id="radius" name="radius" min="0" step="any" required placeholder="e.g. 5">
+        <button class="btn primary" type="submit">Compute Area</button>
+
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+    </form>
+
+    <div class="result-box">
+        <span>AREA OF CIRCLE</span>
+        {% if result is not none %}
+        <strong>{{ "%.2f"|format(result) }}</strong>
+        <small>square units</small>
+        {% else %}
+        <strong>—</strong>
+        <small>Enter a radius to calculate.</small>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,251 @@
+:root{
+    --bg:#3b2418;
+    --surface:#fff8f2;
+    --text:#2b1a12;
+    --muted:#795548;
+    --accent:#8b5e3c;
+    --accent2:#a87955;
+    --line:#cdb8a5;
+    --shadow:0 16px 40px rgba(40,25,15,.20);
+}
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+
+    background:
+        linear-gradient(rgba(59, 36, 24, 0.55), rgba(59, 36, 24, 0.55)),
+        url("../images/friends.jpg") center/cover fixed no-repeat;
+
+    color:var(--text);
+    line-height:1.6;
+}
+.navbar{
+    height:72px;
+    padding:0 7%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:rgba(255,255,255,.96);
+    border-bottom:1px solid var(--line);
+    backdrop-filter:blur(10px);
+}
+.brand{font-size:1.3rem;font-weight:800;text-decoration:none;color:var(--text)}
+.brand span{color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{text-decoration:none;color:var(--muted);font-weight:700;font-size:.92rem}
+.nav-links a:hover{color:var(--accent)}
+.nav-contact{background:var(--text);color:white!important;padding:9px 15px;border-radius:10px}
+.menu-toggle{display:none;border:0;background:none;font-size:1.6rem}
+main{min-height:calc(100vh - 140px)}
+.hero{
+    max-width:1100px;
+    margin:auto;
+    padding:90px 30px;
+    min-height:560px;
+    display:grid;
+    grid-template-columns:1.5fr .8fr;
+    align-items:center;
+    gap:60px;
+}
+.eyebrow{font-size:.75rem;letter-spacing:2px;color:var(--accent);font-weight:800;margin:0 0 10px}
+.hero h1{font-size:clamp(2.8rem,6vw,5rem);line-height:1.02;margin:0 0 15px}
+.hero h1 span{color:var(--accent)}
+.hero h2{font-size:1.2rem;color:var(--muted);margin:0 0 18px}
+.hero-text>p:not(.eyebrow){max-width:650px;color:var(--muted)}
+.buttons{display:flex;gap:12px;margin-top:26px}
+.btn{
+    display:inline-block;
+    border:0;
+    border-radius:10px;
+    padding:11px 18px;
+    font-weight:800;
+    text-decoration:none;
+    cursor:pointer;
+    font-size:.94rem;
+}
+.primary{background:var(--accent);color:white}
+.primary:hover{background:var(--accent2)}
+.secondary{background:white;color:var(--text);border:1px solid var(--line)}
+.profile-card,.about-box,.contact-form,.card,.calculator,.link-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+}
+.profile-card{text-align:center;padding:38px}
+.avatar{
+    width:120px;height:120px;margin:0 auto 18px;border-radius:50%;
+    display:grid;place-items:center;
+    color:white;font-size:2rem;font-weight:800;
+    background:linear-gradient(135deg,var(--accent),#9b8fff);
+}
+.avatar.large{width:100px;height:100px;font-size:1.7rem}
+.profile-card h3{margin:0}
+.profile-card p,.muted{color:var(--muted)}
+.mini-tags{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.mini-tags span{padding:4px 9px;border-radius:20px;background:#f0efff;color:var(--accent);font-size:.75rem;font-weight:800}
+.section,.page-header,.profile-layout,.contact-layout,.link-grid,.calculator{max-width:1100px;margin:auto}
+.section{padding:65px 30px 90px}
+.section h2{font-size:2rem;margin-top:0}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{padding:26px}
+.card h3{margin:10px 0 5px}
+.card p{color:var(--muted)}
+.card a{color:var(--accent);font-weight:800;text-decoration:none}
+.icon,.link-icon{
+    width:45px;height:45px;border-radius:12px;
+    display:grid;place-items:center;
+    background:#f0efff;color:var(--accent);font-weight:900
+}
+.page-header{padding:70px 30px 40px}
+.page-header h1{font-size:3rem;margin:0 0 8px}
+.page-header>p:last-child{color:var(--muted)}
+.profile-layout,.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:0 30px 80px}
+.about-box,.contact-form{padding:32px}
+.motto{margin-top:25px;padding:16px;border-radius:12px;background:#f7f6ff;border-left:4px solid var(--accent)}
+.motto p{margin:5px 0 0;color:var(--muted)}
+.skill-list{display:grid;gap:12px}
+.skill{display:flex;justify-content:space-between;padding:13px 15px;background:#f7f7fb;border-radius:10px}
+.skill span:last-child{color:var(--accent);font-weight:900}
+.contact-form{display:flex;flex-direction:column;gap:7px}
+.contact-form label,.calc-form label{font-weight:800;margin-top:6px}
+.contact-form input,.contact-form textarea,.calc-form input{
+    font:inherit;padding:12px;border-radius:10px;border:1px solid var(--line);outline:none
+}
+.contact-form input:focus,.contact-form textarea:focus,.calc-form input:focus{border-color:var(--accent)}
+.success{color:#16804b;font-weight:800}
+.error{color:#b42318;font-weight:700}
+.calculator{
+    padding:0 30px 80px;
+    background:transparent;
+    border:0;
+    box-shadow:none;
+    display:grid;
+    grid-template-columns:1fr .8fr;
+    gap:24px;
+}
+.calc-form,.result-box{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:30px;
+    box-shadow:var(--shadow)
+}
+.calc-form{display:flex;flex-direction:column;gap:7px}
+.calc-form .btn{margin-top:15px}
+.result-box{
+    min-height:270px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center
+}
+.result-box>span{font-size:.72rem;letter-spacing:2px;color:var(--muted);font-weight:900}
+.result-box strong{font-size:4rem;color:var(--accent)}
+.result-box .text-result{font-size:2rem;word-break:break-word}
+.result-box small{color:var(--muted)}
+.link-grid{padding:0 30px 80px;display:grid;gap:16px}
+.link-card{padding:20px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:18px}
+.link-card h3{margin:0}
+.link-card p{margin:2px 0;color:var(--muted)}
+footer{text-align:center;padding:28px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+@media(max-width:800px){
+    .navbar{padding:0 5%}
+    .menu-toggle{display:block}
+    .nav-links{
+        display:none;position:absolute;top:72px;left:0;right:0;
+        background:white;padding:15px 5%;flex-direction:column;align-items:stretch;
+        border-bottom:1px solid var(--line)
+    }
+    .nav-links.open{display:flex}
+    .nav-contact{text-align:center}
+    .hero{grid-template-columns:1fr;padding-top:55px;gap:35px}
+    .cards,.profile-layout,.contact-layout,.calculator{grid-template-columns:1fr}
+    .page-header h1{font-size:2.4rem}
+    .link-card{grid-template-columns:auto 1fr}
+    .link-card .btn{grid-column:1/-1;text-align:center}
+}
+.profile-photo {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 18px;
+    border: 5px solid #fff8f2;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+/* Make hero text easier to read over the background photo */
+.hero h1 {
+     color: #fff8f2;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.hero h2 {
+    color:  #ffffff;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+.hero p {
+    color: #f5e1d2;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero .eyebrow {
+    color: #d9a06f;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+.profile-card h3 {
+    color: #2b1a12;
+}
+
+.profile-card p {
+    color: #5a3523;
+    font-weight: 500;
+}
+
+.profile-card .mini-tags span {
+    color: #8b5e3c;
+}
+/* Profile page text readability */
+.profile-page h1,
+.profile-page h2 {
+    color: #fff8f2;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.profile-page .eyebrow {
+    color: #d9a06f;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.profile-page > p {
+    color: #f5e1d2;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+/* Make "What I Can Build" easier to read */
+.hero + .section h2 {
+    color: #fff8f2;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+}
+/* Profile page readability */
+.page-header h1 {
+    color: #fff8f2 !important;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+.page-header > p:last-child {
+    color: #f5e1d2 !important;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+}
+/* Make the My Skills outer box smaller */
+.about-box {
+    padding: 20px;
+    height: auto;
+    min-height: 0;
+}

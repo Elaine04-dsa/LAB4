@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Home | {{ profile.name }}{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-text">
+        <p class="eyebrow">WELCOME TO MY PORTFOLIO</p>
+        <h1>Hello, I'm <span>{{ profile.name }}</span>.</h1>
+        <h2>Student • Programmer • Future Developer</h2>
+        <p>{{ profile.about }}</p>
+
+        <div class="buttons">
+            <a class="btn primary" href="{{ url_for('profile') }}">View Profile</a>
+            <a class="btn secondary" href="{{ url_for('contact') }}">Contact Me</a>
+        </div>
+    </div>
+
+<div class="profile-card">
+    <img src="{{ url_for('static', filename='images/me.jpg') }}" alt="My profile photo" class="profile-photo">
+    <h3>{{ profile.name }}</h3>
+        <p>{{ profile.course }}</p>
+        <div class="mini-tags">
+            {% for skill in profile.skills[:3] %}
+            <span>{{ skill }}</span>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <p class="eyebrow">PROGRAMMING WORKS</p>
+    <h2>What I Can Build</h2>
+
+    <div class="cards">
+        <div class="card">
+            <div class="icon">A+</div>
+            <h3>String Converter</h3>
+            <p>Convert text to uppercase using Flask and a simple form.</p>
+            <a href="{{ url_for('works') }}">Try it →</a>
+        </div>
+
+        <div class="card">
+            <div class="icon">○</div>
+            <h3>Circle Area</h3>
+            <p>Calculate the area of a circle by entering its radius.</p>
+            <a href="{{ url_for('acircle') }}">Calculate →</a>
+        </div>
+
+        <div class="card">
+            <div class="icon">△</div>
+            <h3>Triangle Area</h3>
+            <p>Calculate triangle area using base and height.</p>
+            <a href="{{ url_for('atriangle') }}">Calculate →</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

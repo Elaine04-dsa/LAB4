@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Links | {{ profile.name }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <p class="eyebrow">LINK LIST</p>
+    <h1>My Links</h1>
+    <p>A simple user interface for my useful websites and profiles.</p>
+</section>
+
+<section class="link-grid">
+    {% for link in links %}
+    <article class="link-card">
+        <div class="link-icon">↗</div>
+
+        <div>
+            <h3>{{ link.name }}</h3>
+            <p>{{ link.description }}</p>
+        </div>
+
+        <a class="btn secondary" href="{{ link.url }}" target="_blank" rel="noopener">
+            Open Link
+        </a>
+    </article>
+    {% endfor %}
+</section>
+{% endblock %}
