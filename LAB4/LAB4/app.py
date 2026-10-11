@@ -2,6 +2,217 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+
+# =========================
+# LINKED LIST (data structure)
+# =========================
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    # ----- insert -----
+    def insert_beginning(self, value):
+        node = Node(value)
+        node.next = self.head
+        self.head = node
+
+    def insert_end(self, value):
+        node = Node(value)
+        if self.head is None:
+            self.head = node
+            return
+        current = self.head
+        while current.next:
+            current = current.next
+        current.next = node
+
+    def insert_after(self, after_value, value):
+        """Insert value after the first node holding after_value."""
+        current = self.head
+        while current:
+            if current.value == after_value:
+                node = Node(value)
+                node.next = current.next
+                current.next = node
+                return True
+            current = current.next
+        return False
+
+    # ----- remove -----
+    def remove_beginning(self):
+        if self.head is None:
+            return None
+        removed = self.head.value
+        self.head = self.head.next
+        return removed
+
+    def remove_end(self):
+        if self.head is None:
+            return None
+        if self.head.next is None:
+            removed = self.head.value
+            self.head = None
+            return removed
+        current = self.head
+        while current.next.next:
+            current = current.next
+        removed = current.next.value
+        current.next = None
+        return removed
+
+    def remove_value(self, value):
+        current = self.head
+        previous = None
+        while current:
+            if current.value == value:
+                if previous:
+                    previous.next = current.next
+                else:
+                    self.head = current.next
+                return True
+            previous = current
+            current = current.next
+        return False
+
+    # ----- look -----
+    def search(self, value):
+        """Return the position (starting at 1) of value, or 0 if not found."""
+        current = self.head
+        position = 1
+        while current:
+            if current.value == value:
+                return position
+            current = current.next
+            position += 1
+        return 0
+
+    def to_list(self):
+        values = []
+        current = self.head
+        while current:
+            values.append(current.value)
+            current = current.next
+        return values
+
+
+LINKED_LIST = LinkedList()
+
+# =========================
+# STACK (built from nodes) + INFIX TO POSTFIX
+# =========================
+class Stack:
+    """Stack made of nodes. The top of the stack is the head node."""
+
+    def __init__(self):
+        self.top = None
+
+    def is_empty(self):
+        return self.top is None
+
+    def push(self, value):
+        node = Node(value)
+        node.next = self.top
+        self.top = node
+
+    def pop(self):
+        if self.top is None:
+            return None
+        node = self.top
+        self.top = node.next
+        return node.value
+
+    def peek(self):
+        return self.top.value if self.top else None
+
+    def to_list(self):
+        """Return values from bottom to top (for display)."""
+        values = []
+        current = self.top
+        while current:
+            values.append(current.value)
+            current = current.next
+        values.reverse()
+        return values
+
+
+PRECEDENCE = {"+": 1, "-": 1, "*": 2, "/": 2, "^": 3}
+
+
+def tokenize(expression):
+    tokens = []
+    operand = ""
+    for ch in expression:
+        if ch.isalnum():
+            operand += ch
+        else:
+            if operand:
+                tokens.append(operand)
+                operand = ""
+            if ch.isspace():
+                continue
+            if ch in PRECEDENCE or ch in "()":
+                tokens.append(ch)
+            else:
+                raise ValueError(f"Invalid character: '{ch}'")
+    if operand:
+        tokens.append(operand)
+    return tokens
+
+
+def infix_to_postfix(expression):
+    """Returns (postfix_string, steps). Raises ValueError on bad input."""
+    tokens = tokenize(expression)
+    if not tokens:
+        raise ValueError("Please enter an expression.")
+
+    stack = Stack()
+    output = LinkedList()
+    steps = []
+
+    for token in tokens:
+        if token not in PRECEDENCE and token not in "()":
+            output.insert_end(token)
+        elif token == "(":
+            stack.push(token)
+        elif token == ")":
+            while not stack.is_empty() and stack.peek() != "(":
+                output.insert_end(stack.pop())
+            if stack.is_empty():
+                raise ValueError("Mismatched parentheses.")
+            stack.pop()
+        else:
+            while (not stack.is_empty() and stack.peek() != "("
+                   and (PRECEDENCE[stack.peek()] > PRECEDENCE[token]
+                        or (PRECEDENCE[stack.peek()] == PRECEDENCE[token]
+                            and token != "^"))):
+                output.insert_end(stack.pop())
+            stack.push(token)
+
+        steps.append({
+            "token": token,
+            "stack": " ".join(stack.to_list()) or "empty",
+            "output": " ".join(output.to_list()) or "empty",
+        })
+
+    while not stack.is_empty():
+        op = stack.pop()
+        if op == "(":
+            raise ValueError("Mismatched parentheses.")
+        output.insert_end(op)
+        steps.append({
+            "token": "pop",
+            "stack": " ".join(stack.to_list()) or "empty",
+            "output": " ".join(output.to_list()) or "empty",
+        })
+
+    return " ".join(output.to_list()), steps
+
 # =========================
 # PERSONAL INFORMATION
 # Replace these sample values with your own data.
@@ -144,5 +355,97 @@ def links():
     )
 
 
+# =========================
+# LINKED LIST PAGE
+# =========================
+@app.route("/linked-list", methods=["GET", "POST"])
+def linked_list():
+    message = None
+
+    if request.method == "POST":
+        action = request.form.get("action", "")
+        value = request.form.get("value", "").strip()
+        after = request.form.get("after", "").strip()
+
+        needs_value = ["insert_beginning", "insert_end", "insert_after",
+                       "remove_value", "search"]
+
+        if action in needs_value and not value:
+            message = "Please enter a value."
+        elif action == "insert_beginning":
+            LINKED_LIST.insert_beginning(value)
+            message = f"Inserted '{value}' at the beginning."
+        elif action == "insert_end":
+            LINKED_LIST.insert_end(value)
+            message = f"Inserted '{value}' at the end."
+        elif action == "insert_after":
+            if not after:
+                message = "Please enter the existing node value in 'After node'."
+            elif LINKED_LIST.insert_after(after, value):
+                message = f"Inserted '{value}' after '{after}'."
+            else:
+                message = f"Node '{after}' was not found."
+        elif action == "remove_beginning":
+            removed = LINKED_LIST.remove_beginning()
+            message = (f"Removed '{removed}' from the beginning."
+                       if removed is not None else "The list is empty.")
+        elif action == "remove_end":
+            removed = LINKED_LIST.remove_end()
+            message = (f"Removed '{removed}' from the end."
+                       if removed is not None else "The list is empty.")
+        elif action == "remove_value":
+            if LINKED_LIST.remove_value(value):
+                message = f"Removed '{value}'."
+            else:
+                message = f"'{value}' was not found."
+        elif action == "search":
+            position = LINKED_LIST.search(value)
+            if position:
+                message = f"'{value}' found at position {position}."
+            else:
+                message = f"'{value}' was not found."
+        elif action == "print":
+            items = LINKED_LIST.to_list()
+            if items:
+                message = " -> ".join(items) + " -> None"
+            else:
+                message = "The list is empty."
+
+    return render_template(
+        "linked_list.html",
+        profile=PROFILE,
+        nodes=LINKED_LIST.to_list(),
+        message=message
+    )
+
+# =========================
+# INFIX TO POSTFIX PAGE
+# =========================
+@app.route("/works/infix-postfix", methods=["GET", "POST"])
+def infix_postfix():
+    expression = ""
+    result = None
+    error = None
+    steps = []
+
+    if request.method == "POST":
+        expression = request.form.get("expression", "").strip()
+        try:
+            result, steps = infix_to_postfix(expression)
+        except ValueError as e:
+            error = str(e)
+
+    return render_template(
+        "infix_postfix.html",
+        profile=PROFILE,
+        expression=expression,
+        result=result,
+        error=error,
+        steps=steps
+    )
+
+# =========================
+# RUN THE APP (must stay at the very bottom)
+# =========================
 if __name__ == "__main__":
     app.run(debug=True)
