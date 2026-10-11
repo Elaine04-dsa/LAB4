@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Infix to Postfix | {{ profile.name }}{% endblock %}
+
+{% block content %}
+<style>
+    .ip-card { background: #fff6f0; border-radius: 16px; padding: 20px; color: #2b1a10; margin-top: 18px; }
+    .ip-card h3 { margin: 0 0 12px; font-size: 16px; color: #2b1a10; }
+    .ip-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+    .ip-table th { text-align: left; padding: 8px 10px; background: #8b5a3c; color: #ffffff; }
+    .ip-table td { padding: 8px 10px; border-bottom: 1px solid #e3cdbd; color: #2b1a10; }
+    .ip-error { color: #a32d2d; font-weight: 700; }
+</style>
+
+<section class="page-header">
+    <p class="eyebrow">PROGRAMMING WORK</p>
+    <h1>Infix to Postfix</h1>
+    <p>Convert an infix expression to postfix using a stack made of nodes.</p>
+</section>
+
+<section class="calculator">
+    <form action="{{ url_for('infix_postfix') }}" method="POST" class="calc-form">
+        <label for="expression">Infix expression</label>
+        <input type="text" id="expression" name="expression" value="{{ expression }}"
+               placeholder="e.g. (A+B)*C-D/E" autocomplete="off" required>
+        <button class="btn primary" type="submit">Convert</button>
+    </form>
+
+    <div class="result-box">
+        <span>POSTFIX</span>
+        {% if error %}
+        <strong class="ip-error">{{ error }}</strong>
+        {% elif result %}
+        <strong class="text-result">{{ result }}</strong>
+        {% else %}
+        <strong>—</strong>
+        <small>Your postfix expression will appear here.</small>
+        {% endif %}
+    </div>
+
+    {% if steps %}
+    <div class="ip-card">
+        <h3>Step-by-step</h3>
+        <table class="ip-table">
+            <tr><th>Token</th><th>Stack (bottom → top)</th><th>Output</th></tr>
+            {% for s in steps %}
+            <tr>
+                <td>{{ s.token }}</td>
+                <td>{{ s.stack }}</td>
+                <td>{{ s.output }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
