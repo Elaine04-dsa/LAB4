@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Linked List | {{ profile.name }}{% endblock %}
+
+{% block content %}
+<style>
+    .ll-visual { background: #fff6f0; border-radius: 16px; padding: 20px; color: #2b1a10; }
+    .ll-visual h3 { margin: 0 0 14px; font-size: 16px; color: #2b1a10; }
+    .ll-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; row-gap: 16px; }
+    .ll-end { padding: 10px 14px; border-radius: 8px; background: #8b5a3c; color: #ffffff; font-weight: 700; }
+    .ll-arrow { font-size: 22px; color: #8b5a3c; font-weight: 700; }
+    .ll-node { display: flex; border: 2px solid #8b5a3c; border-radius: 8px; overflow: hidden; }
+    .ll-value { padding: 10px 16px; font-weight: 700; background: #f1dfd2; color: #2b1a10; }
+    .ll-next { padding: 10px 10px; font-size: 12px; font-weight: 600; background: #ffffff; color: #8b5a3c; border-left: 2px solid #8b5a3c; display: flex; align-items: center; }
+    .ll-group { margin-top: 16px; }
+    .ll-group p { margin: 0 0 8px; font-size: 14px; }
+    .ll-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+</style>
+
+<section class="page-header">
+    <p class="eyebrow">PROGRAMMING WORK</p>
+    <h1>Linked List</h1>
+    <p>Each node stores a value and a pointer to the next node.</p>
+</section>
+
+<section class="calculator">
+    <div class="ll-visual">
+        <h3>Current list</h3>
+        <div class="ll-row">
+            <span class="ll-end">head</span>
+            {% for value in nodes %}
+            <span class="ll-arrow">→</span>
+            <div class="ll-node">
+                <span class="ll-value">{{ value }}</span>
+                <span class="ll-next">next</span>
+            </div>
+            {% endfor %}
+            <span class="ll-arrow">→</span>
+            <span class="ll-end">None</span>
+        </div>
+    </div>
+
+    <form action="{{ url_for('linked_list') }}" method="POST" class="calc-form">
+        <label for="value">Value</label>
+        <input type="text" id="value" name="value" placeholder="e.g. 10 or hello" autocomplete="off">
+
+        <label for="after">After node (for insert after)</label>
+        <input type="text" id="after" name="after" placeholder="existing value" autocomplete="off">
+
+        <div class="ll-group">
+            <p>Insert</p>
+            <div class="ll-buttons">
+                <button class="btn primary" type="submit" name="action" value="insert_beginning">Insert at beginning</button>
+                <button class="btn primary" type="submit" name="action" value="insert_end">Insert at end</button>
+                <button class="btn primary" type="submit" name="action" value="insert_after">Insert after</button>
+            </div>
+        </div>
+
+        <div class="ll-group">
+            <p>Remove</p>
+            <div class="ll-buttons">
+                <button class="btn secondary" type="submit" name="action" value="remove_beginning">Remove beginning</button>
+                <button class="btn secondary" type="submit" name="action" value="remove_end">Remove at end</button>
+                <button class="btn secondary" type="submit" name="action" value="remove_value">Remove value</button>
+            </div>
+        </div>
+
+        <div class="ll-group">
+            <p>Look</p>
+            <div class="ll-buttons">
+                <button class="btn secondary" type="submit" name="action" value="search">Search</button>
+                <button class="btn secondary" type="submit" name="action" value="print">Print list</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="result-box">
+        <span>RESULT</span>
+        {% if message %}
+        <strong class="text-result">{{ message }}</strong>
+        {% else %}
+        <strong>—</strong>
+        <small>The result of your action will appear here.</small>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
