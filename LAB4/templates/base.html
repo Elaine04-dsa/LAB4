@@ -6,6 +6,7 @@
     <title>{% block title %}My Portfolio{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script defer src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
     <nav class="navbar">
@@ -16,7 +17,16 @@
         <div class="nav-links">
             <a href="{{ url_for('index') }}">Home</a>
             <a href="{{ url_for('profile') }}">Profile</a>
-            <a href="{{ url_for('works') }}">Works</a>
+
+            <div class="dropdown">
+                <a href="{{ url_for('works') }}">Works &#9662;</a>
+                <div class="dropdown-menu">
+                    <a href="{{ url_for('linked_list') }}">Linked List</a>
+                    <a href="{{ url_for('infix_postfix') }}">Infix to Postfix</a>
+                    <a href="{{ url_for('queue_page') }}">Queue</a>
+                </div>
+            </div>
+
             <a href="{{ url_for('links') }}">Links</a>
             <a href="{{ url_for('contact') }}" class="nav-contact">Contact</a>
         </div>
