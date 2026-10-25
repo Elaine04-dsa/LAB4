@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Queue | {{ profile.name }}{% endblock %}
+
+{% block extra_head %}
+<style>
+    .q-wrap { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px; }
+    .q-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    .q-card {
+        background: #fff6ef;
+        border: 1px solid #e6d5c8;
+        border-radius: 18px;
+        padding: 24px;
+        color: #2a1810;
+    }
+    .q-card label { display: block; font-weight: 700; margin-bottom: 8px; }
+    .q-card input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #e6d5c8;
+        border-radius: 8px;
+        font-size: 1rem;
+        margin-bottom: 14px;
+    }
+    .q-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .q-buttons button {
+        background: #8b5a3c;
+        color: #fff;
+        border: 0;
+        border-radius: 8px;
+        padding: 12px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+    }
+    .q-buttons button:hover { background: #734a31; }
+    .q-buttons button.q-alt { background: #2a1810; }
+    .q-buttons button.q-alt:hover { background: #3d261b; }
+    .q-message {
+        background: #fff;
+        border-left: 4px solid #8b5a3c;
+        border-radius: 8px;
+        padding: 12px 14px;
+        margin-top: 16px;
+        font-size: 0.9rem;
+    }
+    .q-stat { text-align: center; }
+    .q-stat small { letter-spacing: 0.15em; font-size: 0.65rem; font-weight: 700; }
+    .q-stat .q-big { font-size: 2.2rem; font-weight: 800; color: #8b5a3c; margin: 6px 0; }
+    .q-visual { margin-top: 24px; }
+    .q-visual h2 { margin: 0 0 16px; font-size: 1rem; }
+    .q-tags {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: #8b5a3c;
+        margin-bottom: 8px;
+    }
+    .q-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        overflow-x: auto;
+        padding: 6px 2px 10px;
+        min-height: 64px;
+    }
+    .q-node {
+        background: #fff;
+        border: 2px solid #8b5a3c;
+        border-radius: 10px;
+        padding: 12px 18px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+    .q-node.q-front { background: #8b5a3c; color: #fff; }
+    .q-arrow { color: #8b5a3c; font-weight: 800; }
+    .q-empty { color: #8a7567; font-style: italic; }
+    @media (max-width: 700px) { .q-grid { grid-template-columns: 1fr; } }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="q-wrap">
+    <div class="page-header">
+        <h1>Queue</h1>
+        <p>A first-in, first-out (FIFO) queue made of nodes. Enqueue at the rear, dequeue from the front.</p>
+    </div>
+
+    <div class="q-grid">
+        <div class="q-card">
+            <form method="post">
+                <label for="value">Value</label>
+                <input type="text" id="value" name="value" placeholder="e.g. 10 or Ana" autocomplete="off">
+                <div class="q-buttons">
+                    <button type="submit" name="action" value="enqueue">Enqueue</button>
+                    <button type="submit" name="action" value="dequeue" class="q-alt">Dequeue</button>
+                    <button type="submit" name="action" value="peek">Peek</button>
+                    <button type="submit" name="action" value="print" class="q-alt">Print</button>
+                </div>
+            </form>
+            {% if message %}
+            <div class="q-message">{{ message }}</div>
+            {% endif %}
+        </div>
+
+        <div class="q-card q-stat">
+            <small>SIZE</small>
+            <div class="q-big">{{ size }}</div>
+            <small>{{ 'EMPTY' if size == 0 else 'ITEMS WAITING' }}</small>
+        </div>
+    </div>
+
+    <div class="q-card q-visual">
+        <h2>Current queue</h2>
+        <div class="q-tags"><span>FRONT (dequeue here)</span><span>REAR (enqueue here)</span></div>
+        <div class="q-row">
+            {% if items %}
+                {% for item in items %}
+                    <div class="q-node {{ 'q-front' if loop.first else '' }}">{{ item }}</div>
+                    {% if not loop.last %}<span class="q-arrow">&rarr;</span>{% endif %}
+                {% endfor %}
+            {% else %}
+                <span class="q-empty">The queue is empty.</span>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
